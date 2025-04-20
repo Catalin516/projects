@@ -1,0 +1,3 @@
+C:/Users/stanc/OneDrive/Desktop/Nuova cartella/Diller/Diller/cmake-build-debug/CMakeFiles/shooter.dir
+C:/Users/stanc/OneDrive/Desktop/Nuova cartella/Diller/Diller/cmake-build-debug/CMakeFiles/edit_cache.dir
+C:/Users/stanc/OneDrive/Desktop/Nuova cartella/Diller/Diller/cmake-build-debug/CMakeFiles/rebuild_cache.dir

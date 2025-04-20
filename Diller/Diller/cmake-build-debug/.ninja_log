@@ -1,0 +1,10 @@
+# ninja log v5
+1	155	7646296913975308	build.ninja	2efd10f35edbc344
+0	12	0	clean	ef8842113fecf3f6
+225	430	7268389597841163	raylib_template_portable_windows.exe	c6a6a2beacf13bb8
+1	946	7277077504277388	CMakeFiles/shooter.dir/main.cpp.obj	984cf38284586acf
+950	1393	7277077508818880	shooter.exe	458984d0442b3f97
+1	562	7646297110694596	CMakeFiles/shooter.dir/main.cpp.obj	9730afbeec1336f9
+564	800	7646297113024596	shooter.exe	42cbec813d721cd0
+3	415	7646298048477366	CMakeFiles/shooter.dir/main.cpp.obj	9730afbeec1336f9
+415	612	7646298050847360	shooter.exe	42cbec813d721cd0
