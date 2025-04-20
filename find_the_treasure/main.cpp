@@ -6,11 +6,12 @@ struct Person{
     int y;
     int columns = 0;
     int rows = 0;
+    bool isMoving = false;
 };
-struct Tresure{
+struct Treasure{
     int x;
     int y;
-    bool collected= false;
+    bool collected = false;
 };
 struct Key{
     int x;
@@ -18,6 +19,92 @@ struct Key{
     bool collected= false;
 };
 
+void draw_tile_static(Texture2D t,int x, int y, const std::string& direction) {
+    Rectangle source = {
+            (float)(32 * 0),
+            (float)(64 * 0),
+            32,
+            64
+    };
+    std::cout<< direction;
+    if(direction == "NORTH"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 3);
+    }if(direction == "SOUTH"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 0);
+    }if(direction == "WEST"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 1);
+    }if(direction == "EAST"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 5);
+    }if(direction == "NORTHWEST"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 2);
+    }if(direction == "SOUTHWEST"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 1);
+    }if(direction == "NORTHEAST"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 4);
+    }if(direction == "SOUTHEAST"){
+            source.x=(float)(32 * 0);
+            source.y=(float)(64 * 5);
+    }
+    const int scale = 5;
+    Rectangle dest = {
+            (float)x,
+            (float)y,
+            32*scale,
+            64*scale,                  
+    };
+    Vector2 origin = {0.0f, 0.0f};
+    DrawTexturePro(t, source, dest, origin, 0, WHITE);
+}
+void draw_tile_dynamic(Texture2D t,int x, int y, const std::string& direction) {
+    Rectangle source = {
+            (float)(32 * 0),
+            (float)(64 * 0),
+            32,
+            64
+    };
+    std::cout<< direction;
+    if(direction == "NORTH"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 3);
+    }if(direction == "SOUTH"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 0);
+    }if(direction == "WEST"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 1);
+    }if(direction == "EAST"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 5);
+    }if(direction == "NORTHWEST"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 2);
+    }if(direction == "SOUTHWEST"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 1);
+    }if(direction == "NORTHEAST"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 4);
+    }if(direction == "SOUTHEAST"){
+        source.x=(float)(32 * 0);
+        source.y=(float)(64 * 5);
+    }
+    const int scale = 5;
+    Rectangle dest = {
+            (float)x,
+            (float)y,
+            32*scale,
+            64*scale,
+    };
+    Vector2 origin = {0.0f, 0.0f};
+    DrawTexturePro(t, source, dest, origin, 0, WHITE);
+}
 
 void draw_doors (int max, int Player_columns, int Player_rows){
     if (Player_rows == 0 && Player_columns == 0) {
@@ -63,16 +150,44 @@ void draw_doors (int max, int Player_columns, int Player_rows){
         DrawRectangle(1870, 465, 50, 150, BLUE);
     }
 }
-void draw_tresure(int room_x, int room_y, int Player_columns, int Player_rows, bool collected){
-    if(room_x==Player_rows && room_y == Player_columns  && collected == false){
-        DrawRectangle(860, 440, 200, 200, GREEN);
+void draw_treasure(Texture2D t,int room_x, int room_y, int Player_columns, int Player_rows, bool &collected) {
+    Rectangle source = {
+            (float)(32 * 4),
+            (float)(32 * 0),
+            32,
+            32
+    };
+    const int scale = 6;
+    Rectangle dest = {
+            (float)870,
+            (float)420,
+            32*scale,
+            32*scale,
+    };
+    Vector2 origin = {0.0f, 0.0f};
+    if (room_x == Player_rows && room_y == Player_columns && collected == false) {
+        DrawTexturePro(t, source, dest, origin, 0, WHITE);
     }
 }
-void draw_keys(std::vector <Key> key,int Player_columns, int Player_rows){
+void draw_keys(Texture2D t,std::vector <Key> key,int Player_columns, int Player_rows){
+    Rectangle source = {
+            (float)(16 * 1),
+            (float)(16 * 0),
+            16,
+            16
+    };
+    const int scale = 2;
+    Rectangle dest = {
+            (float)935,
+            (float)515,
+            32*scale,
+            32*scale,
+    };
+    Vector2 origin = {0.0f, 0.0f};
     for (int i = 0; i < key.size(); ++i) {
         if (key.at(i).x==Player_rows && key.at(i).y == Player_columns){
             if (key.at(i).collected == false){
-                DrawRectangle(935,515,50,50, YELLOW);
+                DrawTexturePro(t, source, dest, origin, 0, WHITE);
             }
         }
     }
@@ -80,18 +195,16 @@ void draw_keys(std::vector <Key> key,int Player_columns, int Player_rows){
 void collect_keys (std::vector <Key> & key,int Player_columns, int Player_rows, int Player_x, int Player_y, int &keys){
     for (int i = 0; i < key.size(); ++i) {
         if (key.at(i).x==Player_rows && key.at(i).y == Player_columns){
-            if(Player_x>=835&&Player_x<=1085&&Player_y>=415&&Player_y<=765 && key.at(i).collected == false){
+            if (Player_x >= 930 && Player_x <= 990 && Player_y >= 510 && Player_y <= 570 && key.at(i).collected == false) {
                 key.at(i).collected=true;
                 keys++;
             }
         }
     }
 }
-void collect_tresure (int room_x, int room_y, int Player_columns, int Player_rows, int &keys, int Player_x, int Player_y, bool & collected){
-    if(room_x==Player_columns && room_y == Player_rows){
-        if(Player_x>=835&&Player_x<=1085&&Player_y>=415&&Player_y<=765 && collected == false){
-            collected=true;
-        }
+void collect_treasure (int Player_x, int Player_y, bool &collected) {
+    if (Player_x >= 870 && Player_x <= 1062 && Player_y >= 420 && Player_y <= 612 && !collected) {
+        collected = true;
     }
 }
 
@@ -101,26 +214,31 @@ int main(void)
     //--------------------------------------------------------------------------------------
     const int screenWidth = 1920;
     const int screenHeight = 1080;
-    int max = 3;
+    int max = 2;
     srand(time(NULL));
 
     InitWindow(screenWidth, screenHeight, "TEST");
 
-    std::vector <Key> v;
+
+
+    std::vector<Key> v;
 
     while (v.size() < max) {
         bool add = true;
         Key key {
-            rand()%max,
-            rand()%max
+            rand() % max,
+            rand() % max,
         };
+
+        if (key.x == 0 && key.y == 0) {
+            add = false;
+        }
 
         for (int i = 0; i < v.size() && add; i++) {
             if (key.x == v.at(i).x && key.y == v.at(i).y) {
                 add = false;
             }
         }
-
         if (add) {
             v.push_back(key);
         }
@@ -137,6 +255,12 @@ int main(void)
     Player.x=screenWidth/2;
     Player.columns = 0;
     Player.rows = 0;
+    Player.isMoving = false;
+
+    Texture2D playerTexture1 = LoadTextureFromImage(LoadImage("../res/idle.png"));
+    Texture2D playerTexture2 = LoadTextureFromImage(LoadImage("../res/walk.png"));
+    Texture2D keyTexture = LoadTextureFromImage(LoadImage("../res/key.png"));
+    Texture2D chestTexture = LoadTextureFromImage(LoadImage("../res/Treasure.png"));
 
     int rany=rand()%max;
     int ranx=rand()%max;
@@ -169,12 +293,13 @@ int main(void)
 
 
 
-    Tresure rooms;
+    Treasure rooms;
 
-    Texture2D background1 = LoadTexture("../assets/selezione2.png");
 
     rooms.x=ranx;
     rooms.y=rany;
+    std::string currentDirection = "NONE";
+    int fase=1;
 
     SetTargetFPS(60);
                    // Set our game to run at 60 frames-per-second
@@ -183,21 +308,56 @@ int main(void)
     // Main game loop
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
+        if (IsKeyDown(KEY_D) && IsKeyDown(KEY_S)) {
+            Player.x += 10;
+            Player.y += 10;
+            currentDirection = "SOUTHEAST";
+            Player.isMoving = true;
+        }
+        else if (IsKeyDown(KEY_W) && IsKeyDown(KEY_D)) {
+            Player.x += 10;
+            Player.y -= 10;
+            currentDirection = "NORTHEAST";
+            Player.isMoving = true;
+        }
+        else if (IsKeyDown(KEY_W) && IsKeyDown(KEY_A)) {
+            Player.x -= 10;
+            Player.y -= 10;
+            currentDirection = "NORTHWEST";
+            Player.isMoving = true;
+        }
+        else if (IsKeyDown(KEY_A) && IsKeyDown(KEY_S)) {
+            Player.x -= 10;
+            Player.y += 10;
+            currentDirection = "SOUTHWEST";
+            Player.isMoving = true;
+        }else if (IsKeyDown(KEY_W) && Player.y >= 50) {
+            Player.y -= 10;
+            currentDirection = "NORTH";
+            Player.isMoving = true;
+        }
+        else if (IsKeyDown(KEY_A) && Player.x >= 50) {
+            Player.x -= 10;
+            currentDirection = "WEST";
+            Player.isMoving = true;
+        }
+        else if (IsKeyDown(KEY_S) && Player.y <= 1030) {
+            Player.y += 10;
+            currentDirection = "SOUTH";
+            Player.isMoving = true;
+        }
+        else if (IsKeyDown(KEY_D) && Player.x <= 1870) {
+            Player.x += 10;
+            currentDirection = "EAST";
+            Player.isMoving = true;
+        }else{
+            Player.isMoving= false;
+        }
         if (IsKeyPressed(KEY_F11)){
             ToggleFullscreen();
         }
-        if (IsKeyDown(KEY_W)&& Player.y>=50){
-            Player.y -= 10;
-        }
-        if (IsKeyDown(KEY_A)&& Player.x>=50){
-            Player.x -= 10;
-        }
-        if (IsKeyDown(KEY_S)&& Player.y<=1030){
-            Player.y += 10;
-        }
-        if (IsKeyDown(KEY_D)&& Player.x<=1870){
-            Player.x += 10;
-        }
+
+
         if (Player.x >= 885 && Player.x <= 1035 && Player.y >= 1030) {
 
             if (Player.rows < max-1) {
@@ -232,8 +392,8 @@ int main(void)
         }
 
         collect_keys(v,Player.columns,Player.rows,Player.x,Player.y,keys_collected);
-        if (keys_collected == max){
-            collect_tresure(rooms.x, rooms.y, Player.columns, Player.rows,keys_collected, Player.x, Player.y, rooms.collected);
+        if (keys_collected == max && rooms.x == Player.rows && rooms.y == Player.columns){
+            collect_treasure(Player.x, Player.y, rooms.collected);
         }
 
 
@@ -246,13 +406,82 @@ int main(void)
 
         ClearBackground(RAYWHITE);
 
-        DrawRectangle(Player.x-50,Player.y-50,100, 100, MAROON);
 
-        draw_doors(max, Player.columns, Player.rows);
+        if (fase == 1){
+            DrawText("Welcome to Find the Treasure!", 600, 200, 50, DARKGRAY);
+            DrawText("Keybinds:", 600, 300, 40, DARKGRAY);
+            DrawText("W - Move upwards", 600, 350, 30, DARKGRAY);
+            DrawText("A - Move to the left", 600, 400, 30, DARKGRAY);
+            DrawText("S - Move downwards", 600, 450, 30, DARKGRAY);
+            DrawText("D - Move to the right", 600, 500, 30, DARKGRAY);
+            DrawText("F11 - Enable/Disable fullscreen", 600, 550, 30, DARKGRAY);
+            DrawText("Collect all the keys to obtain the treasure!", 600, 650, 30, DARKGRAY);
+            DrawText("Press ENTER to continue", 600, 750, 40, DARKBLUE);
+            if (IsKeyPressed(KEY_ENTER)) {
+                fase = 2;
+            }
+        }if(fase == 2){
+            if (Player.isMoving){
+                draw_tile_dynamic(playerTexture2, Player.x-120, Player.y-160, currentDirection);
+            }else{
+                draw_tile_static(playerTexture1, Player.x-120, Player.y-160, currentDirection);
+            }
+            draw_doors(max, Player.columns, Player.rows);
 
-        draw_keys(v,Player.columns,Player.rows);
+            draw_keys(keyTexture,v,Player.columns,Player.rows);
 
-        draw_tresure(rooms.x, rooms.y, Player.columns, Player.rows, rooms.collected);
+            draw_treasure(chestTexture,rooms.x, rooms.y, Player.columns, Player.rows, rooms.collected);
+
+            if (rooms.collected){
+                fase = 3;
+            }
+
+        }
+        if (fase == 3){
+            DrawText("Congratulations !", 700, 300, 60, DARKGREEN);
+            DrawText("You collected the treasure!", 700, 400, 40, DARKBLUE);
+            DrawText("Press R to restart the game", 700, 500, 40, MAROON);
+
+            if (IsKeyPressed(KEY_R)) {
+                rooms.collected = false;
+                keys_collected = 0;
+
+                Player.x = screenWidth / 2;
+                Player.y = screenHeight / 2;
+                Player.columns = 0;
+                Player.rows = 0;
+
+                v.clear();
+                while (v.size() < max) {
+                    bool add = true;
+                    Key key {
+                            rand() % max,
+                            rand() % max
+                    };
+
+                    if (key.x == 0 && key.y == 0) {
+                        add = false;
+                    }
+
+                    for (int i = 0; i < v.size() && add; i++) {
+                        if (key.x == v.at(i).x && key.y == v.at(i).y) {
+                            add = false;
+                        }
+                    }
+                    if (add) {
+                        v.push_back(key);
+                    }
+                }
+
+                rooms.x = rand() % max;
+                rooms.y = rand() % max;
+
+                fase=1;
+            }
+
+        }
+
+
 
         std::cout<<keys_collected<<std::endl;
 

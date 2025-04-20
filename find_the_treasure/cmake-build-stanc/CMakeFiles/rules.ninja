@@ -42,7 +42,7 @@ rule CUSTOM_COMMAND
 # Rule for re-running cmake.
 
 rule RERUN_CMAKE
-  command = "C:\Program Files\JetBrains\CLion 2023.3.2\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -SC:\Users\stanc\OneDrive\Desktop\find_the_treasure -BC:\Users\stanc\OneDrive\Desktop\find_the_treasure\cmake-build-stanc
+  command = "C:\Program Files\JetBrains\CLion 2023.3.2\bin\cmake\win\x64\bin\cmake.exe" --regenerate-during-build -S"C:\Users\stanc\OneDrive\Desktop\Nuova cartella\find_the_treasure" -B"C:\Users\stanc\OneDrive\Desktop\Nuova cartella\find_the_treasure\cmake-build-stanc"
   description = Re-running CMake...
   generator = 1
 

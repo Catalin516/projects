@@ -10,7 +10,7 @@ int main() {
         scelta=rand()%3+1;
         switch (scelta) {
             case 1:
-            s += rand()%'z'+'a';
+                s += rand()%'z'+'a';
             break;
             case 2:
                 s += rand()%'Z'+'A';
