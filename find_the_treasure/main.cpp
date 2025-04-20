@@ -1,6 +1,10 @@
 #include "include/raylib.h"
 #include "iostream"
 #include "vector"
+#include "chrono"
+#include "thread"
+
+
 struct Person{
     int x;
     int y;
@@ -18,8 +22,18 @@ struct Key{
     int y;
     bool collected= false;
 };
+float update_tile_animation(float & x_tile){
+    if (x_tile == 7.5){
+        x_tile=0;
+    } else {
+        x_tile+=1.5;
+    }
+    std::cout<<x_tile;
+    std::this_thread::sleep_for(std::chrono::milliseconds(35));
+    return x_tile;
+}
 
-void draw_tile_static(Texture2D t,int x, int y, const std::string& direction) {
+void draw_tile_static(Texture2D t,int x, int y,float & x_tile, const std::string& direction) {
     Rectangle source = {
             (float)(32 * 0),
             (float)(64 * 0),
@@ -28,41 +42,43 @@ void draw_tile_static(Texture2D t,int x, int y, const std::string& direction) {
     };
     std::cout<< direction;
     if(direction == "NORTH"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 3);
     }if(direction == "SOUTH"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 0);
     }if(direction == "WEST"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 1);
     }if(direction == "EAST"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 5);
     }if(direction == "NORTHWEST"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 2);
     }if(direction == "SOUTHWEST"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 1);
     }if(direction == "NORTHEAST"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 4);
     }if(direction == "SOUTHEAST"){
-            source.x=(float)(32 * 0);
-            source.y=(float)(64 * 5);
+        source.x=(float)(32 * update_tile_animation(x_tile));
+        source.y=(float)(64 * 5);
     }
+
     const int scale = 5;
     Rectangle dest = {
             (float)x,
             (float)y,
             32*scale,
-            64*scale,                  
+            64*scale,
     };
     Vector2 origin = {0.0f, 0.0f};
     DrawTexturePro(t, source, dest, origin, 0, WHITE);
 }
-void draw_tile_dynamic(Texture2D t,int x, int y, const std::string& direction) {
+
+void draw_tile_dynamic(Texture2D t,int x, int y,float & x_tile, const std::string& direction) {
     Rectangle source = {
             (float)(32 * 0),
             (float)(64 * 0),
@@ -71,30 +87,31 @@ void draw_tile_dynamic(Texture2D t,int x, int y, const std::string& direction) {
     };
     std::cout<< direction;
     if(direction == "NORTH"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 3);
     }if(direction == "SOUTH"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 0);
     }if(direction == "WEST"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 1);
     }if(direction == "EAST"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 5);
     }if(direction == "NORTHWEST"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 2);
     }if(direction == "SOUTHWEST"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 1);
     }if(direction == "NORTHEAST"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 4);
     }if(direction == "SOUTHEAST"){
-        source.x=(float)(32 * 0);
+        source.x=(float)(32 * update_tile_animation(x_tile));
         source.y=(float)(64 * 5);
     }
+
     const int scale = 5;
     Rectangle dest = {
             (float)x,
@@ -215,6 +232,7 @@ int main(void)
     const int screenWidth = 1920;
     const int screenHeight = 1080;
     int max = 2;
+    float anim=0;
     srand(time(NULL));
 
     InitWindow(screenWidth, screenHeight, "TEST");
@@ -309,45 +327,45 @@ int main(void)
     while (!WindowShouldClose())    // Detect window close button or ESC key
     {
         if (IsKeyDown(KEY_D) && IsKeyDown(KEY_S)) {
-            Player.x += 10;
-            Player.y += 10;
+            Player.x += 15;
+            Player.y += 15;
             currentDirection = "SOUTHEAST";
             Player.isMoving = true;
         }
         else if (IsKeyDown(KEY_W) && IsKeyDown(KEY_D)) {
-            Player.x += 10;
-            Player.y -= 10;
+            Player.x += 15;
+            Player.y -= 15;
             currentDirection = "NORTHEAST";
             Player.isMoving = true;
         }
         else if (IsKeyDown(KEY_W) && IsKeyDown(KEY_A)) {
-            Player.x -= 10;
-            Player.y -= 10;
+            Player.x -= 15;
+            Player.y -= 15;
             currentDirection = "NORTHWEST";
             Player.isMoving = true;
         }
         else if (IsKeyDown(KEY_A) && IsKeyDown(KEY_S)) {
-            Player.x -= 10;
-            Player.y += 10;
+            Player.x -= 15;
+            Player.y += 15;
             currentDirection = "SOUTHWEST";
             Player.isMoving = true;
         }else if (IsKeyDown(KEY_W) && Player.y >= 50) {
-            Player.y -= 10;
+            Player.y -= 15;
             currentDirection = "NORTH";
             Player.isMoving = true;
         }
         else if (IsKeyDown(KEY_A) && Player.x >= 50) {
-            Player.x -= 10;
+            Player.x -= 15;
             currentDirection = "WEST";
             Player.isMoving = true;
         }
         else if (IsKeyDown(KEY_S) && Player.y <= 1030) {
-            Player.y += 10;
+            Player.y += 15;
             currentDirection = "SOUTH";
             Player.isMoving = true;
         }
         else if (IsKeyDown(KEY_D) && Player.x <= 1870) {
-            Player.x += 10;
+            Player.x += 15;
             currentDirection = "EAST";
             Player.isMoving = true;
         }else{
@@ -422,9 +440,9 @@ int main(void)
             }
         }if(fase == 2){
             if (Player.isMoving){
-                draw_tile_dynamic(playerTexture2, Player.x-120, Player.y-160, currentDirection);
+                draw_tile_dynamic(playerTexture2, Player.x-120, Player.y-160, anim, currentDirection);
             }else{
-                draw_tile_static(playerTexture1, Player.x-120, Player.y-160, currentDirection);
+                draw_tile_static(playerTexture1, Player.x-120, Player.y-160,anim, currentDirection);
             }
             draw_doors(max, Player.columns, Player.rows);
 
