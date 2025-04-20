@@ -1,4 +1,4 @@
-# Personal Project with C++ and Raylib
+# Find the Treasure
 
 ## Overview
 This is a personal project developed using **C++** and the **Raylib** library. The goal is to explore creative programming techniques and graphics rendering while building a fun and engaging application.
