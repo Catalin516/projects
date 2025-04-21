@@ -123,48 +123,85 @@ void draw_tile_dynamic(Texture2D t,int x, int y,float & x_tile, const std::strin
     DrawTexturePro(t, source, dest, origin, 0, WHITE);
 }
 
-void draw_doors (int max, int Player_columns, int Player_rows){
+void draw_doors (Texture2D t, int max, int Player_columns, int Player_rows){
+    Rectangle top = {
+            (float)(32 * 0),
+            (float)(32 * 2),
+            32,
+            32
+    };
+    Rectangle bottom = {
+            (float)(32 * 0),
+            (float)(32 * 3),
+            32,
+            32
+    };
+    Rectangle leftD = {
+            (float)(32 * 0),
+            (float)(32 * 0),
+            32,
+            32
+    };
+    Rectangle rightD = {
+            (float)(32 * 0),
+            (float)(32 * 1),
+            32,
+            32
+    };
+    const int scale = 6;
+    Rectangle dest = {
+            (float)0,
+            (float)0,
+            32*scale,
+            32*scale,
+    };
+
+    Vector2 left = {0.0f, -465.0f};
+    Vector2 right = {-1870.0f, -465.0f};
+    Vector2 up = {-885.0f, 0.0f};
+    Vector2 down = {-885.0f, -1030.0f};
+
     if (Player_rows == 0 && Player_columns == 0) {
-        DrawRectangle(885, 1030, 150, 50, BLUE);
-        DrawRectangle(1870, 465, 50, 150, BLUE);
+        DrawTexturePro(t, rightD, dest, right, 0, WHITE);
+        DrawTexturePro(t, bottom, dest, down, 0, WHITE);
     }
     if(Player_rows==0 && Player_columns == max-1){
-        DrawRectangle(885,1030,150,50,BLUE);
-        DrawRectangle(0, 465, 50, 150, BLUE);
+        DrawTexturePro(t, bottom, dest, down, 0, WHITE);
+        DrawTexturePro(t, leftD, dest, left, 0, WHITE);
     }
     if (Player_rows == max-1 && Player_columns == 0) {
-        DrawRectangle(885, 0, 150, 50, BLUE);
-        DrawRectangle(1870, 465, 50, 150, BLUE);
+        DrawTexturePro(t, top, dest, up, 0, WHITE);
+        DrawTexturePro(t, rightD, dest, right, 0, WHITE);
     }
     if (Player_rows == max-1 && Player_columns == max-1) {
-        DrawRectangle(885, 0, 150, 50, BLUE);
-        DrawRectangle(0, 465, 50, 150, BLUE);
+        DrawTexturePro(t, top, dest, up, 0, WHITE);
+        DrawTexturePro(t, leftD, dest, left, 0, WHITE);
     }
     if (Player_rows == 0 && Player_columns > 0 && Player_columns < max-1){
-        DrawRectangle(885, 1030, 150, 50, BLUE);
-        DrawRectangle(1870, 465, 50, 150, BLUE);
-        DrawRectangle(0, 465, 50, 150, BLUE);
+        DrawTexturePro(t, bottom, dest, down, 0, WHITE);
+        DrawTexturePro(t, rightD, dest, right, 0, WHITE);
+        DrawTexturePro(t, leftD, dest, left, 0, WHITE);
     }
     if (Player_rows == max-1 && Player_columns > 0 && Player_columns < max-1){
-        DrawRectangle(885, 0, 150, 50, BLUE);
-        DrawRectangle(1870, 465, 50, 150, BLUE);
-        DrawRectangle(0, 465, 50, 150, BLUE);
+        DrawTexturePro(t, top, dest, up, 0, WHITE);
+        DrawTexturePro(t, rightD, dest, right, 0, WHITE);
+        DrawTexturePro(t, leftD, dest, left, 0, WHITE);
     }
     if (Player_columns == 0 && Player_rows > 0 && Player_rows < max-1){
-        DrawRectangle(885, 1030, 150, 50, BLUE);
-        DrawRectangle(1870, 465, 50, 150, BLUE);
-        DrawRectangle(885, 0, 150, 50, BLUE);
+        DrawTexturePro(t, bottom, dest, down, 0, WHITE);
+        DrawTexturePro(t, rightD, dest, right, 0, WHITE);
+        DrawTexturePro(t, top, dest, up, 0, WHITE);
     }
     if (Player_columns == max-1 && Player_rows > 0 && Player_rows < max-1){
-        DrawRectangle(885, 0, 150, 50, BLUE);
-        DrawRectangle(885, 1030, 150, 50, BLUE);
-        DrawRectangle(0, 465, 50, 150, BLUE);
+        DrawTexturePro(t, top, dest, up, 0, WHITE);
+        DrawTexturePro(t, bottom, dest, down, 0, WHITE);
+        DrawTexturePro(t, leftD, dest, left, 0, WHITE);
     }
     if (Player_columns > 0 && Player_columns < max-1 && Player_rows > 0 && Player_rows < max-1){
-        DrawRectangle(885, 0, 150, 50, BLUE);
-        DrawRectangle(885, 1030, 150, 50, BLUE);
-        DrawRectangle(0, 465, 50, 150, BLUE);
-        DrawRectangle(1870, 465, 50, 150, BLUE);
+        DrawTexturePro(t, top, dest, up, 0, WHITE);
+        DrawTexturePro(t, bottom, dest, down, 0, WHITE);
+        DrawTexturePro(t, leftD, dest, left, 0, WHITE);
+        DrawTexturePro(t, rightD, dest, right, 0, WHITE);
     }
 }
 void draw_treasure(Texture2D t,int room_x, int room_y, int Player_columns, int Player_rows, bool &collected) {
@@ -279,6 +316,8 @@ int main(void)
     Texture2D playerTexture2 = LoadTextureFromImage(LoadImage("../res/walk.png"));
     Texture2D keyTexture = LoadTextureFromImage(LoadImage("../res/key.png"));
     Texture2D chestTexture = LoadTextureFromImage(LoadImage("../res/Treasure.png"));
+    Texture2D mapTexture = LoadTextureFromImage(LoadImage("../res/Map.png"));
+    Texture2D doors = LoadTextureFromImage(LoadImage("../res/Doors.png"));
 
     int rany=rand()%max;
     int ranx=rand()%max;
@@ -439,16 +478,19 @@ int main(void)
                 fase = 2;
             }
         }if(fase == 2){
+            DrawTexture(mapTexture,0,0,WHITE);
+
+            draw_doors(doors,max, Player.columns, Player.rows);
+
+            draw_keys(keyTexture,v,Player.columns,Player.rows);
+
+            draw_treasure(chestTexture,rooms.x, rooms.y, Player.columns, Player.rows, rooms.collected);
+
             if (Player.isMoving){
                 draw_tile_dynamic(playerTexture2, Player.x-120, Player.y-160, anim, currentDirection);
             }else{
                 draw_tile_static(playerTexture1, Player.x-120, Player.y-160,anim, currentDirection);
             }
-            draw_doors(max, Player.columns, Player.rows);
-
-            draw_keys(keyTexture,v,Player.columns,Player.rows);
-
-            draw_treasure(chestTexture,rooms.x, rooms.y, Player.columns, Player.rows, rooms.collected);
 
             if (rooms.collected){
                 fase = 3;
