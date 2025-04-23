@@ -148,7 +148,7 @@ void draw_doors (Texture2D t, int max, int Player_columns, int Player_rows){
             32,
             32
     };
-    const int scale = 6;
+    const int scale = 5;
     Rectangle dest = {
             (float)0,
             (float)0,
@@ -156,10 +156,10 @@ void draw_doors (Texture2D t, int max, int Player_columns, int Player_rows){
             32*scale,
     };
 
-    Vector2 left = {0.0f, -465.0f};
-    Vector2 right = {-1870.0f, -465.0f};
-    Vector2 up = {-885.0f, 0.0f};
-    Vector2 down = {-885.0f, -1030.0f};
+    Vector2 left = {40.0f, -460.0f};
+    Vector2 right = {-1800.0f, -460.0f};
+    Vector2 up = {-880.0f, 40.0f};
+    Vector2 down = {-880.0f, -955.0f};
 
     if (Player_rows == 0 && Player_columns == 0) {
         DrawTexturePro(t, rightD, dest, right, 0, WHITE);
@@ -268,7 +268,7 @@ int main(void)
     //--------------------------------------------------------------------------------------
     const int screenWidth = 1920;
     const int screenHeight = 1080;
-    int max = 2;
+    int max = 3;
     float anim=0;
     srand(time(NULL));
 
@@ -318,6 +318,8 @@ int main(void)
     Texture2D chestTexture = LoadTextureFromImage(LoadImage("../res/Treasure.png"));
     Texture2D mapTexture = LoadTextureFromImage(LoadImage("../res/Map.png"));
     Texture2D doors = LoadTextureFromImage(LoadImage("../res/Doors.png"));
+    Texture2D bckgnd1 = LoadTextureFromImage(LoadImage("../res/Background1.png"));
+    Texture2D bckgnd2 = LoadTextureFromImage(LoadImage("../res/Background2.png"));
 
     int rany=rand()%max;
     int ranx=rand()%max;
@@ -465,15 +467,7 @@ int main(void)
 
 
         if (fase == 1){
-            DrawText("Welcome to Find the Treasure!", 600, 200, 50, DARKGRAY);
-            DrawText("Keybinds:", 600, 300, 40, DARKGRAY);
-            DrawText("W - Move upwards", 600, 350, 30, DARKGRAY);
-            DrawText("A - Move to the left", 600, 400, 30, DARKGRAY);
-            DrawText("S - Move downwards", 600, 450, 30, DARKGRAY);
-            DrawText("D - Move to the right", 600, 500, 30, DARKGRAY);
-            DrawText("F11 - Enable/Disable fullscreen", 600, 550, 30, DARKGRAY);
-            DrawText("Collect all the keys to obtain the treasure!", 600, 650, 30, DARKGRAY);
-            DrawText("Press ENTER to continue", 600, 750, 40, DARKBLUE);
+            DrawTexture(bckgnd1,0,0,WHITE);
             if (IsKeyPressed(KEY_ENTER)) {
                 fase = 2;
             }
@@ -498,9 +492,7 @@ int main(void)
 
         }
         if (fase == 3){
-            DrawText("Congratulations !", 700, 300, 60, DARKGREEN);
-            DrawText("You collected the treasure!", 700, 400, 40, DARKBLUE);
-            DrawText("Press R to restart the game", 700, 500, 40, MAROON);
+            DrawTexture(bckgnd2,0,0,WHITE);
 
             if (IsKeyPressed(KEY_R)) {
                 rooms.collected = false;
