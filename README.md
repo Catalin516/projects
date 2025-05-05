@@ -16,3 +16,8 @@ Currently, this is a **solo project** maintained by **Catalin Stanciu**. However
 
 ## License
 This project is personal and currently does not have a specific license. If you intend to use or modify it, please contact the contributor.
+
+## Video
+https://github.com/user-attachments/assets/8060a315-43a9-4e47-a533-88b63d1cd9be
+
+
